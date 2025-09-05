@@ -1,0 +1,19 @@
+resource "docker_image" "redis" {
+  name = "redis:${var.redis_version}"
+}
+
+resource "docker_container" "redis" {
+  name  = "redis-${terraform.workspace}"
+  image = docker_image.redis.image_id
+
+  networks_advanced {
+    name = docker_network.persistence_net.name
+  }
+
+  ports {
+    internal = 6379
+    external = var.redis_external_port[terraform.workspace]
+  }
+
+  restart = "always"
+}

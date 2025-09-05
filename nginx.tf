@@ -3,7 +3,6 @@ resource "docker_image" "nginx" {
   keep_locally = false
 }
 
-# Creamos contenedores Nginx con for_each y un mapa de puertos
 resource "docker_container" "nginx" {
   for_each = var.nginx_containers
 

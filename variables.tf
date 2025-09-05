@@ -22,3 +22,7 @@ variable "postgres_password" {
 variable "postgres_db" {
   type        = string
 }
+
+variable "grafana_external_port" {
+  type        = number
+}

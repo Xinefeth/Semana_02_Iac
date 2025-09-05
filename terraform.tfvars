@@ -14,3 +14,6 @@ postgres_external_port = 5432
 postgres_user          = "admin"
 postgres_password      = "admin123"
 postgres_db            = "app_db"
+
+
+grafana_external_port = 3000

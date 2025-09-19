@@ -1,7 +1,7 @@
 # Run web applications
 resource "docker_container" "site1" {
   name  = "site1-${terraform.workspace}"
-  image = "nginx:1.24-alpine"
+  image = "ginx:1.28-alpine"
 
   networks_advanced {
     name = docker_network.front_net.name
@@ -49,7 +49,7 @@ resource "docker_container" "site2" {
 
 resource "docker_container" "site3" {
   name  = "site3-${terraform.workspace}"
-  image = "nginx:1.30-alpine"
+  image = "ginx:1.28-alpine"
 
   networks_advanced {
     name = docker_network.front_net.name

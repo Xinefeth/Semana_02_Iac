@@ -1,15 +1,14 @@
-# Deploy reverse proxy container
 resource "docker_container" "gateway" {
   name  = "reverse-proxy-${terraform.workspace}"
-  image = "nginx:1.28-alpine"
+  image = "nginx:stable-alpine3.21-perl"
 
   networks_advanced {
-    name = docker_network.web_net.name
+    name = docker_network.app_net.name
   }
 
   ports {
     internal = 80
-    external = var.gateway_port[terraform.workspace]
+    external = var.proxy_external_port[terraform.workspace]
   }
 
   volumes {

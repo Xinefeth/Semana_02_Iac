@@ -1,19 +1,14 @@
-# Run web applications
 resource "docker_container" "site1" {
   name  = "site1-${terraform.workspace}"
-  image = "ginx:1.28-alpine"
+  image = "nginx:stable-alpine3.21-perl"
 
   networks_advanced {
-    name = docker_network.front_net.name
-  }
-
-  networks_advanced {
-    name = docker_network.storage_net.name
+    name = docker_network.app_net.name
   }
 
   ports {
     internal = 80
-    external = var.site1_port[terraform.workspace]
+    external = var.app1_external_port[terraform.workspace]
   }
 
   volumes {
@@ -25,19 +20,15 @@ resource "docker_container" "site1" {
 
 resource "docker_container" "site2" {
   name  = "site2-${terraform.workspace}"
-  image = "nginx:1.28.0-alpine"
+  image = "nginx:stable-alpine3.21-perl"
 
   networks_advanced {
-    name = docker_network.front_net.name
-  }
-
-  networks_advanced {
-    name = docker_network.storage_net.name
+    name = docker_network.app_net.name
   }
 
   ports {
     internal = 80
-    external = var.site2_port[terraform.workspace]
+    external = var.app2_external_port[terraform.workspace]
   }
 
   volumes {
@@ -49,19 +40,15 @@ resource "docker_container" "site2" {
 
 resource "docker_container" "site3" {
   name  = "site3-${terraform.workspace}"
-  image = "ginx:1.28-alpine"
+  image = "nginx:stable-alpine3.21-perl"
 
   networks_advanced {
-    name = docker_network.front_net.name
-  }
-
-  networks_advanced {
-    name = docker_network.storage_net.name
+    name = docker_network.app_net.name
   }
 
   ports {
     internal = 80
-    external = var.site3_port[terraform.workspace]
+    external = var.app3_external_port[terraform.workspace]
   }
 
   volumes {

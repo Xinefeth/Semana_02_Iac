@@ -47,21 +47,23 @@ nginx.conf → Proxy → App1/App2/App3 → Redis/Postgres → Grafana
 
 ## Despliegue paso a paso
 
-1. Clonar el repositorio:
-git clone https://github.com/Xinefeth/Semana_03_Iac
+1) Clonar el repositorio:
+```
+git clone https://github.com/Xinefeth/Semana_02_Iac.git
+```
 
-
-2. Crear infraestructura con Terraform:
+2) Crear infraestructura con Terraform:
+```
 sudo terraform workspace new dev 
 sudo terraform workspace select dev
 sudo terraform apply
-
-3. Configurar servicios con Ansible:
+```
+3) Configurar servicios con Ansible:
+```
 sudo ansible-playbook -i config/inventory.ini config/playbook.yaml
-
----
+```
 
 ## Verificación
+```
 docker ps     # listar contenedores activos
-
-Accede luego a las URLs mencionadas en Accesos rápidos.
+```

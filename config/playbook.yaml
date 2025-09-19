@@ -1,0 +1,67 @@
+---
+- name: "Configurar balanceador NGINX"
+  hosts: localhost
+  gather_facts: false
+  vars:
+    root_dir: "{{ playbook_dir }}/.."
+    nginx_conf_dir: "{{ root_dir }}/volumes/nginx_config"
+    proxy_container: "reverse-proxy-dev"
+    proxy_html: "{{ root_dir }}/volumes/gateway"
+    app1_html: "{{ root_dir }}/volumes/app1"
+    app2_html: "{{ root_dir }}/volumes/app2"
+    app3_html: "{{ root_dir }}/volumes/app3"
+
+  tasks:
+    - name: Crear directorios necesarios
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0755"
+      loop:
+        - "{{ nginx_conf_dir }}"
+        - "{{ proxy_html }}"
+        - "{{ app1_html }}"
+        - "{{ app2_html }}"
+        - "{{ app3_html }}"
+
+    - name: Copiar contenido de App1
+      ansible.builtin.copy:
+        src: "../files/app1/index.html"
+        dest: "{{ app1_html }}/index.html"
+        mode: '0644'
+
+    - name: Copiar contenido de App2
+      ansible.builtin.copy:
+        src: "../files/app2/index.html"
+        dest: "{{ app2_html }}/index.html"
+        mode: '0644'
+
+    - name: Copiar contenido de App3
+      ansible.builtin.copy:
+        src: "../files/app3/index.html"
+        dest: "{{ app3_html }}/index.html"
+        mode: '0644'
+
+    - name: Copiar página principal del Proxy
+      ansible.builtin.copy:
+        src: "../files/proxy/index.html"
+        dest: "{{ proxy_html }}/index.html"
+        mode: '0644'
+
+    - name: Copiar configuración de Nginx
+      ansible.builtin.copy:
+        src: "{{ root_dir }}/templates/nginx.conf"
+        dest: "{{ nginx_conf_dir }}/default.conf"
+        mode: '0644'
+
+    - name: Recargar configuración de Nginx
+      ansible.builtin.command: >
+        docker exec {{ proxy_container }} nginx -s reload
+      register: reload_status
+      changed_when: reload_status.rc == 0
+      failed_when: false
+
+    - name: Reiniciar el contenedor del Proxy
+      ansible.builtin.command: >
+        docker restart {{ proxy_container }}
+      when: reload_status.rc == 0

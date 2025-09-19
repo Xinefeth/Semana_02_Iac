@@ -1,7 +1,7 @@
 # 📘 Semana_02_IaC — Uso rápido (Terraform + Docker)
 
 Infraestructura local con **Terraform + Docker** que levanta:  
-- **Nginx** (3 apps balanceadas)  
+- **Nginx** (3 aplicaciones balanceadas)  
 - **Redis**  
 - **PostgreSQL**  
 - **Grafana**  
@@ -19,7 +19,7 @@ Infraestructura local con **Terraform + Docker** que levanta:
 
 ## 🔌 Puertos
 
-### 🌐 Nginx (3 contenedores)
+### 🌐 Nginx (3 apps)
 - **Interno:** `80`  
 - **Externos:**  
   - `app1` → `8080`  
@@ -45,7 +45,7 @@ Infraestructura local con **Terraform + Docker** que levanta:
 
 ## 🛠️ Comandos Terraform
 
-📌 Ubícate en la raíz del repo.
+📌 Ubícate en la raíz del repositorio.
 
 ### 1️⃣ Inicializar
 ```bash
@@ -84,7 +84,7 @@ docker ps
 - **PostgreSQL:**  
   - Host: `localhost`  
   - Puerto: `5432`  
-  - Variables definidas en `terraform.tfvars`  
+  - Credenciales definidas en `terraform.tfvars`  
 
 - **Redis:**  
   - Puerto externo según workspace (ejemplo: `6380` en **dev**)  
@@ -102,5 +102,3 @@ postgres_db       = "iac_db"
 # Redis
 redis_password = "redis123"
 ```
-
-

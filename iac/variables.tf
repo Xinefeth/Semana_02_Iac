@@ -1,28 +1,34 @@
-variable "redis_external_port" {
+variable "app1_port" {
+  description = "Puerto externo asignado para la aplicación App1"
   type        = map(number)
 }
 
-variable "nginx_containers" {
+variable "app2_port" {
+  description = "Puerto externo asignado para la aplicación App2"
   type        = map(number)
 }
 
-variable "postgres_external_port" {
-  type        = number
+variable "app3_port" {
+  description = "Puerto externo asignado para la aplicación App3"
+  type        = map(number)
 }
 
-variable "postgres_user" {
-  type        = string
+variable "proxy_port" {
+  description = "Puerto externo del contenedor Proxy"
+  type        = map(number)
 }
 
-variable "postgres_password" {
-  type        = string
-  sensitive   = true
+variable "postgre_port" {
+  description = "Puerto externo del contenedor PostgreSQL"
+  type        = map(number)
 }
 
-variable "postgres_db" {
-  type        = string
+variable "grafana_port" {
+  description = "Puerto externo del contenedor Grafana"
+  type        = map(number)
 }
 
-variable "grafana_external_port" {
-  type        = number
+variable "redis_port" {
+  description = "Puerto externo del contenedor Redis"
+  type        = map(number)
 }

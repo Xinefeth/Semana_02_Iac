@@ -1,19 +1,34 @@
-redis_external_port = {
+app1_port = {
+  default = 8080
+  dev     = 3001
+}
+
+app2_port = {
+  default = 8081
+  dev     = 3002
+}
+
+app3_port = {
+  default = 8082
+  dev     = 3003
+}
+
+proxy_port = {
+  default = 80
+  dev     = 89
+}
+
+postgre_port = {
+  default = 5432
+  dev     = 5434
+}
+
+redis_port = {
+  default = 6379
   dev     = 6380
-  qa      = 6385
-  prod    = 6381
 }
 
-nginx_containers = {
-  app1 = 8080
-  app2 = 8081
-  app3 = 8082
+grafana_port = {
+  default = 3000
+  dev     = 4000
 }
-
-postgres_external_port = 5432
-postgres_user          = "admin"
-postgres_password      = "admin123"
-postgres_db            = "app_db"
-
-
-grafana_external_port = 3000

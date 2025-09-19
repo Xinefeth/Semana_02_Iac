@@ -1,26 +1,31 @@
-resource "docker_image" "postgres" {
-  name         = "postgres:15-alpine"
-  keep_locally = false
-}
-
-resource "docker_container" "postgres" {
-  name  = "postgres-${terraform.workspace}"
-  image = docker_image.postgres.image_id
+resource "docker_container" "postgresql" {
+  name  = "db-${terraform.workspace}"
+  image = "postgres:15-alpine"
 
   networks_advanced {
-    name = docker_network.persistence_net.name
+    name = docker_network.data_net.name
   }
 
   ports {
     internal = 5432
-    external = var.postgres_external_port
+    external = var.postgres_port[terraform.workspace]
   }
 
   env = [
-    "POSTGRES_USER=${var.postgres_user}",
-    "POSTGRES_PASSWORD=${var.postgres_password}",
-    "POSTGRES_DB=${var.postgres_db}"
+    "POSTGRES_PASSWORD=securepass123"
   ]
+}
 
-  restart = "always"
+resource "docker_container" "redis_cache" {
+  name  = "redis-${terraform.workspace}"
+  image = "redis:7.2-alpine"
+
+  networks_advanced {
+    name = docker_network.data_net.name
+  }
+
+  ports {
+    internal = 6379
+    external = var.redis_port[terraform.workspace]
+  }
 }

@@ -1,4 +1,4 @@
-# Semana_07_IaC — Terraform + Ansible + Docker
+# Semana_07_IaC — Terraform + Ansible + Docker + Firewall
 
 Infraestructura local con Terraform y Ansible que levanta:
 
@@ -7,41 +7,6 @@ Infraestructura local con Terraform y Ansible que levanta:
 - PostgreSQL (base de datos en red de persistencia)  
 - Grafana (monitorización en red de monitoreo)
 
-
----
-
-## Imágenes usadas
-- Nginx: nginx:stable-alpine3.21-perl  
-- Redis: redis:7.4.1-alpine  
-- PostgreSQL: postgres:15-alpine  
-- Grafana: grafana/grafana-enterprise:9.4.7
-
----
-
-## Puertos
-### Nginx (3 apps)
-- Interno: 80  
-- Externos:  
-  - app1 → 8080  
-  - app2 → 8081  
-  - app3 → 8082  
-
-### Redis
-- Interno: 6379  
-- Externo (según workspace):  
-  - dev → 6380  
-  - qa → 6385  
-  - prod → 6381  
-
-### PostgreSQL
-- Interno: 5432  
-- Externo: 5432  
-
-### Grafana
-- Interno: 3000  
-- Externo: 3000  
-
----
 
 ## Despliegue paso a paso
 
@@ -53,11 +18,11 @@ git clone https://github.com/Xinefeth/Semana_02_Iac.git
 2) Crear infraestructura con Terraform:
 ```
 cd iac
-sudo terraform init
-sudo terraform workspace new dev 
-sudo terraform workspace select dev
-sudo terraform plan
-sudo terraform apply
+terraform init
+terraform workspace new dev 
+terraform workspace select dev
+terraform plan
+terraform apply
 ```
 3) Configurar servicios con Ansible:
 ```

@@ -3,6 +3,25 @@
   hosts: localhost
   gather_facts: false
   vars:
+    
+    app1_external_port: 3001
+    app2_external_port: 3002
+    app3_external_port: 3003
+    proxy_external_port: 89
+    grafana_external_port: 4000
+    db_external_port: 5434
+    cache_external_port: 6380
+    
+        allowed_tcp_ports:
+      - "{{ proxy_external_port }}"
+      - "{{ app1_external_port }}"
+      - "{{ app2_external_port }}"
+      - "{{ app3_external_port }}"
+      - "{{ grafana_external_port }}"
+      - "{{ db_external_port }}"
+      - "{{ cache_external_port }}"
+      - 22
+    
     root_dir: "{{ playbook_dir }}/.."
     nginx_conf_dir: "{{ root_dir }}/volumes/nginx_config"
     proxy_container: "reverse-proxy-dev"
@@ -65,3 +84,39 @@
       ansible.builtin.command: >
         docker restart {{ proxy_container }}
       when: reload_status.rc == 0
+
+    - name: Instalar UFW en Ubuntu/Debian
+      become: true
+      ansible.builtin.apt:
+        name: ufw
+        state: present
+        update_cache: true
+
+    - name: Política por defecto (deny incoming / allow outgoing)
+      become: true
+      community.general.ufw:
+        state: enabled
+        policy: deny
+        direction: incoming
+
+    - name: Permitir salida explícitamente
+      become: true
+      community.general.ufw:
+        direction: outgoing
+        policy: allow
+
+    - name: Permitir puertos del laboratorio
+      become: true
+      community.general.ufw:
+        rule: allow
+        port: "{{ item }}"
+        proto: tcp
+      loop: "{{ allowed_tcp_ports }}"
+
+    - name: Habilitar logging bajo y mostrar estado (evidencia)
+      become: true
+      ansible.builtin.command: ufw logging on
+
+    - name: Asegurar UFW habilitado
+      become: true
+      community.general.ufw:
